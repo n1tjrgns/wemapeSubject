@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Hello</title>
+    <h1>ㅎㅎ</h1>
+    <h1>234234452454235</h1>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div class="container">
+    <form role="form" action="#" th:action="@{/search}" th:object="${requestForm}" method="post" novalidate>
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" th:field="*{url}" name="url" class="form-control" id="url">
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">URL Error</small>
+        </div>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select name="type" id="type" class="form-control">
+                <option th:value="'H'" selected>HTML 태그 제외</option>
+                <option th:value="'T'" >Text 전체</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="count">출력 단위 묶음</label>
+            <input type="text" th:field="*{count}" name="count" class="form-control" id="count">
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('count')}" th:errors="*{count}">COUNT Error</small>
+        </div>
+        <button type="submit" class="btn btn-primary">출력</button>
+    </form>
+    <div class="form-group">
+        <p>
+            <label for="result">출력</label><br>
+            <textarea id="result" th:text="${result}" cols="150" rows="30"></textarea>
+        </p>
+        <p>
+            <label for="quotient">몫 : </label>
+            <span id="quotient" th:text="${quotient}"></span>
+        </p>
+        <p>
+            <label for="remainder">나머지 : </label>
+            <span id="remainder" th:text="${remainder}"></span>
+        </p>
+    </div>
+</div>
+</body>
+</html>
