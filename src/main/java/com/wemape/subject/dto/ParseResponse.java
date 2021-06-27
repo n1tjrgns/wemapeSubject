@@ -10,6 +10,7 @@ public class ParseResponse {
     String result;
     int quotient; //몫
     int remainder; //나머지
+    String exception;
 
     @Builder
     public ParseResponse(String result, int quotient, int remainder) {

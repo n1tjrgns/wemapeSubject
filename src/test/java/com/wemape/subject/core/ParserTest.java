@@ -1,6 +1,7 @@
 package com.wemape.subject.core;
 
 import com.wemape.subject.dto.ParseResponse;
+import com.wemape.subject.dto.ParseResponseFactory;
 import com.wemape.subject.service.HParserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ class ParserTest {
 
     @Test
     void 특수문자_제거() {
-        String special = "<html>123!@#$%^&*()_+hihi;";
+        String special = "<html>123!@?=#$%^&*()_+hihi;";
 
         String removeSpecial = Parser.removeSpecial(special);
 
@@ -69,7 +70,7 @@ class ParserTest {
     //Html 제거, text 추출 후 -> 공백 제거 후 -> 영어 또는 숫자 추출
 
     @Test
-    void HTML태그_제거_로직_성공(){
+    void HTML태그_제거_몫_나머지_확인(){
         int count = 10;
         String doc = "<!doctype html>\n" +
                 "<html lang=\"en\" xmlns=\"http://www.w3.org/1999/html\"> \n" +
@@ -100,10 +101,10 @@ class ParserTest {
                 " </body>\n" +
                 "</html>";
 
-        String hFilterHtml = hParserService.hFilterHtml(doc);
-        ParseResponse parseResponse = hParserService.calculate(hFilterHtml, count);
+        ParserDto parserDto = Parser.makeParserWithFilter(doc, "H");
+        String mixString = StringConvertUtil.getMixString(parserDto.getNumberToString(), parserDto.getEngToString());
+        ParseResponse parseResponse = ParseResponseFactory.of(mixString, count);
 
-        assertEquals(hFilterHtml,"H2H2L2L2M3R3T3T4T4U4e4e4e5l5l5optxy");
         assertEquals(parseResponse.getQuotient(),3);
         assertEquals(parseResponse.getRemainder(),5);
     }
@@ -141,10 +142,10 @@ class ParserTest {
                 " </body>\n" +
                 "</html>";
 
-        String tFilterHtml = hParserService.tFilterHtml(doc);
-        ParseResponse parseResponse = hParserService.calculate(tFilterHtml, count);
+        ParserDto parserDto = Parser.makeParserWithFilter(doc, "T");
+        String mixString = StringConvertUtil.getMixString(parserDto.getNumberToString(), parserDto.getEngToString());
+        ParseResponse parseResponse = ParseResponseFactory.of(mixString, count);
 
-        assertEquals(tFilterHtml,"C0F0H1H1H1L1L1M1R2T2T2T2T3T3T3U3U3a4a4a4a4a4a5a5a5a5a8a9a9a9aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbcccccccccccccccccccccccccddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffffffffffffffffgggggghhhhhhhhhhhhhhhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiillllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllmmmmmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnoooooooooooooooooooooooooooooooooooooooooooooooooooooooopppppppppppppppppppppppppppppppppqqqrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrssssssssssssssssssssssssssssssssssttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttuuuuuuuuuuuuuuuuuuuuuuuuvvvvvvvvvvvvvvvvwwwwwxxxxxxxyyyyyyyyyyyy");
         assertEquals(parseResponse.getQuotient(),73);
         assertEquals(parseResponse.getRemainder(),4);
     }

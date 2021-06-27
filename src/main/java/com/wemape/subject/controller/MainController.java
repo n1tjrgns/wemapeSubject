@@ -43,7 +43,7 @@ public class MainController {
             return "index";
         }
 
-        ParseResponse parseResponse = hParserService.start(requestForm.getUrl(), type, Integer.parseInt(requestForm.getCount()));
+        ParseResponse parseResponse = hParserService.parser(requestForm.getUrl(), type, Integer.parseInt(requestForm.getCount()));
 
         model.addAttribute("result", parseResponse.getResult());
         model.addAttribute("quotient", parseResponse.getQuotient());
